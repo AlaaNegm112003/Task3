@@ -1,0 +1,56 @@
+#include <iostream>
+#include <set>
+#include <vector>
+using namespace std;
+
+const int MAXN = 101; // Assuming the grid is at most 100x100
+
+int n, m;
+char col;
+char room[MAXN][MAXN];
+
+// Check if a cell is within grid boundaries
+bool valid(int x, int y) {
+    return x >= 0 && x < n && y >= 0 && y < m;
+}
+
+int main() {
+    // Fast input/output
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    // Input reading
+    cin >> n >> m >> col;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            cin >> room[i][j];
+        }
+    }
+
+    // Direction vectors for 4 directions (up, right, down, left)
+    int dirx[] = {-1, 0, 1, 0};
+    int diry[] = {0, 1, 0, -1};
+
+    set<char> unique_chars;
+
+    // Process each cell in the grid
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            if (room[i][j] == col) {
+                // Check all 4 directions
+                for (int k = 0; k < 4; ++k) {
+                    int tox = i + dirx[k];
+                    int toy = j + diry[k];
+                    if (valid(tox, toy) && room[tox][toy] != col && room[tox][toy] != '.') {
+                        unique_chars.insert(room[tox][toy]);
+                    }
+                }
+            }
+        }
+    }
+
+    // Output the number of unique adjacent characters
+    cout << unique_chars.size() << endl;
+
+    return 0;
+}
